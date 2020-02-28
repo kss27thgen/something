@@ -17,7 +17,10 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     script: [
-      { src: "https://kit.fontawesome.com/db706bd9b9.js", crossorigin: "anonymous" }
+      {
+        src: "https://kit.fontawesome.com/db706bd9b9.js",
+        crossorigin: "anonymous"
+      }
     ]
   },
   /*
@@ -31,9 +34,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    '~/plugins/firebase'
-  ],
+  plugins: ["~/plugins/firebase"],
   /*
    ** Nuxt.js dev-modules
    */
@@ -44,6 +45,12 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
+    [
+      "nuxt-lazy-load",{
+        // Your options
+        defaultImage: '/images/default.gif',
+      }
+    ]
   ],
   /*
    ** Axios module configuration

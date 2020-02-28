@@ -14,7 +14,7 @@
                     </div>
                     <div class="post-body">
                         <p class="image-wrapper">
-                            <img :src="post.file" class="post-body__file">
+                            <img :src="post.file" class="post-body__file" v-lazy-load>
                         </p>
                         <p class="post-body__content">{{ post.content }}</p>
                     </div>
