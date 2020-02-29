@@ -166,6 +166,7 @@ footer {
     &-info {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
 
         &__name {
             font-size: 2.3rem;
