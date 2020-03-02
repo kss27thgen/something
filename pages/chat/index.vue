@@ -1,7 +1,9 @@
 <template>
     <div class="container">
         <header>
-            <nuxt-link to="/">Back</nuxt-link>
+            <nuxt-link to="/">
+                <i class="far fa-arrow-alt-circle-left arrow-icon fa-3x"></i>
+            </nuxt-link>
         </header>
 
         <main>
@@ -50,7 +52,8 @@ export default {
             nickname: null,
             chat: {
                 text: null,
-                file: null
+                file: null,
+                fileName: null
             },
             posts: []
         }
@@ -60,41 +63,52 @@ export default {
             if (this.chat.text === null && this.chat.file === null) {
                 return 
             }
-            db.collection('chat').add({
-                nickname: this.nickname,
-                content: this.chat.text,
-                timestamp: Date.now(),
-                time: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
-            })
-            .then(res => {
-                this.chat.id = res.id
-                db.collection('chat').doc(res.id).update({
-                    id: res.id
-                })
-                this.chat.text = null
-            })
-            .then(() => {
-                if (this.chat.file !== null) {
-                    storageRef.child('images/' + this.chat.id).put(this.chat.file)
-                    .then(() => {
-                        storageRef.child('images/' + this.chat.id).getDownloadURL()
-                        .then(url => {
-                            db.collection('chat').doc(this.chat.id).update({
-                                file: url
+
+            // When there is photo upload
+            if (this.chat.file !== null) {
+                storageRef.child('images/' + this.chat.fileName).put(this.chat.file)
+                .then(() => {
+                    storageRef.child('images/' + this.chat.fileName).getDownloadURL()
+                    .then(url => {
+                        
+                        db.collection('chat').add({
+                            nickname: this.nickname,
+                            content: this.chat.text,
+                            file: url,
+                            timestamp: Date.now(),
+                            time: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
+                        })
+                        .then(res => {
+                            this.chat.id = res.id
+                            db.collection('chat').doc(res.id).update({
+                                id: res.id
                             })
-                            .then(() => {
-                                this.chat.file = null
-                            })
+                            this.chat.text = null
                         })
                     })
-                }
-            })
+                })
 
-            
-
+            // When there is no photo
+            } else {
+                db.collection('chat').add({
+                    nickname: this.nickname,
+                    content: this.chat.text,
+                    timestamp: Date.now(),
+                    time: moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')
+                })
+                .then(res => {
+                    this.chat.id = res.id
+                    db.collection('chat').doc(res.id).update({
+                        id: res.id
+                    })
+                    this.chat.text = null
+                })
+            }
         },
+
         selectFile() {
             this.chat.file = event.target.files[0]
+            this.chat.fileName = event.target.files[0].name
         },
 
         scroll() {
@@ -120,7 +134,6 @@ export default {
             })
         })
     }
-    
 }
 </script>
 
@@ -128,6 +141,13 @@ export default {
 header {
 	background: var(--color-beige);
 	height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .arrow-icon {
+        color: white;
+    }
 }
 
 main {
