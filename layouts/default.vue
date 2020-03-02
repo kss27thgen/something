@@ -1,8 +1,16 @@
 <template>
   <div>
-    <nuxt />
+    <transition name="page">
+      <nuxt />
+    </transition>
   </div>
 </template>
+
+<script>
+export default {
+
+}
+</script>
 
 <style>
 :root {
@@ -52,6 +60,18 @@ li {
 	cursor: pointer;
 	outline: none;
 }
+
+/* page transition */
+.page-enter, .page-leave-active {
+  opacity: 0;
+  transform: scale(1.1)
+}
+.page-enter-active,
+.page-leave-active {
+  transition: all 1s;
+}
+
+
 
 @media (min-width:576px) {
     
