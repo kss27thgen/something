@@ -13,7 +13,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "firebase": "^7.9.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-sass": "^4.13.1",
     "nuxt": "^2.0.0",
     "nuxt-lazy-load": "^1.1.3",
